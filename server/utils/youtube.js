@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "https://www.googleapis.com/youtube/v3";
 
-// ✅ 1. getPlaylistDetails
+// ✅ 1. Get playlist details (title + thumbnail)
 export async function getPlaylistDetails(playlistId) {
   try {
     const res = await axios.get(`${BASE_URL}/playlists`, {
@@ -13,20 +13,20 @@ export async function getPlaylistDetails(playlistId) {
       },
     });
 
-    const item = res.data.items[0];
+    const item = res.data.items?.[0];
     if (!item) return null;
 
     return {
       title: item.snippet.title,
-      thumbnail: item.snippet.thumbnails.high.url,
+      thumbnail: item.snippet.thumbnails?.high?.url,
     };
   } catch (error) {
-    console.error(error.message);
+    console.error("Playlist Details Error:", error.response?.data || error.message);
     return null;
   }
 }
 
-// ✅ 2. getAllVideoIds
+// ✅ 2. Get all video IDs from playlist
 export async function getAllVideoIds(playlistId) {
   let videoIds = [];
   let nextPageToken = null;
@@ -43,8 +43,10 @@ export async function getAllVideoIds(playlistId) {
         },
       });
 
-      const ids = res.data.items.map(
-        item => item.contentDetails.videoId
+      const items = res.data.items || [];
+
+      const ids = items.map(
+        (item) => item.contentDetails.videoId
       );
 
       videoIds.push(...ids);
@@ -55,12 +57,12 @@ export async function getAllVideoIds(playlistId) {
     return videoIds;
 
   } catch (error) {
-    console.error(error.message);
+    console.error("Video IDs Error:", error.response?.data || error.message);
     return [];
   }
 }
 
-// ✅ 3. getVideoDurations
+// ✅ 3. Get durations for all videos
 export async function getVideoDurations(videoIds) {
   let durations = [];
 
@@ -71,13 +73,15 @@ export async function getVideoDurations(videoIds) {
       const res = await axios.get(`${BASE_URL}/videos`, {
         params: {
           part: "contentDetails",
-          id: chunk.join(","),
+          id: chunk.join(","), // 🔥 IMPORTANT
           key: process.env.YOUTUBE_API_KEY,
         },
       });
 
-      const videoDurations = res.data.items.map(
-        item => item.contentDetails.duration
+      const items = res.data.items || [];
+
+      const videoDurations = items.map(
+        (item) => item.contentDetails?.duration
       );
 
       durations.push(...videoDurations);
@@ -86,18 +90,20 @@ export async function getVideoDurations(videoIds) {
     return durations;
 
   } catch (error) {
-    console.error(error.message);
+    console.error("Durations Error:", error.response?.data || error.message);
     return [];
   }
 }
 
-
+// ✅ 4. Convert ISO duration → seconds (FIXED VERSION)
 export function convertISOToSeconds(duration) {
-  const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+  if (!duration) return 0;
 
-  const hours = parseInt(match[1]) || 0;
-  const minutes = parseInt(match[2]) || 0;
-  const seconds = parseInt(match[3]) || 0;
+  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
 
-  return hours * 3600 + minutes * 60 + seconds;
+  return (
+    (parseInt(match?.[1]) || 0) * 3600 +
+    (parseInt(match?.[2]) || 0) * 60 +
+    (parseInt(match?.[3]) || 0)
+  );
 }
