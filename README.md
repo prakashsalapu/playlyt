@@ -44,7 +44,7 @@ A modern web app that analyzes any YouTube playlist and provides insights like t
 
 ---
 
-## 📸 Screenshots![alt text](image.png)
+## 📸 Screenshots!
 
 ### 🏠 Homepage
 
