@@ -58,10 +58,10 @@ export default function App() {
         {!data && (
           <div className="text-center mb-10 animate-fadeIn">
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
-              Playlist <span className="text-purple-400">Analyzer</span>
+              Play<span className="text-purple-400">Lyt</span>
             </h1>
             <p className="text-gray-400 mt-3 text-sm sm:text-base">
-              Analyze • Optimize • Track your learning efficiently
+              YouTube Playlist Analyzer
             </p>
           </div>
         )}
@@ -154,7 +154,7 @@ export default function App() {
 
       {/* FOOTER */}
       <footer className="text-center text-gray-500 text-sm py-6 border-t border-white/10">
-        © {new Date().getFullYear()} Playlist Analyzer • Made with ❤️ by Prakash Salapu
+        © {new Date().getFullYear()} PlayLyt • Made with ❤️ by Prakash Salapu
       </footer>
     </div>
   );

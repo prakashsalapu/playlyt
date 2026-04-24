@@ -1,12 +1,13 @@
-# 🎬 YouTube Playlist Analyzer
 
+# 🎬 PlayLyt
+### YouTube Playlist Analyzer
 A modern web app that analyzes any YouTube playlist and provides insights like total duration, average video length, and optimized watch time based on playback speed.
 
 ---
 
 ## 🚀 Live Demo
 
-👉 https://yt-playlist-length-calculater.vercel.app
+👉 https://playlyt.vercel.app
 
 ---
 
@@ -61,8 +62,8 @@ A modern web app that analyzes any YouTube playlist and provides insights like t
 ### 1️⃣ Clone the repo
 
 ```bash
-git clone https://github.com/your-username/youtube-playlist-analyzer.git
-cd youtube-playlist-analyzer
+git clone https://github.com/your-username/playlyt.git
+cd playlyt
 ```
 
 ---
